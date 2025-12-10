@@ -1,0 +1,81 @@
+Shap Values e/ou feature importance
+RFECV com randomforest e PCA
+cross_validation deve ser melhor
+normalizar valores para certos modelos??
+colocar feature importances na Data_preparation(testar com modelos diferentes)
+
+
+
+
+
+
+
+
+
+
+
+
+
+"""feature_importances = rf_model.feature_importances_
+
+feature_importance_dict = list(zip(X_train.columns, feature_importances))
+
+sorted_features = sorted(feature_importance_dict, key=lambda x: x[1], reverse=True)
+
+top_features = [feature for feature, importance in sorted_features[:500]]
+
+# Create a new DataFrame with only the top 20 features
+X_train = X_train[top_features]
+X_test = X_test[top_features]
+
+for feature, importance in sorted_features[:500]:
+    print(f"{feature}: {importance}")
+
+rf_model = RandomForestClassifier(random_state=2021)
+rf_model.fit(X_train, y_train)"""
+--------------------------------------------------------------------------------------------------------
+feature_importances_df = pd.DataFrame({
+    'Feature': X.columns, 
+    'Importance': feature_importances
+})
+
+# Ordenar as features por importância em ordem decrescente
+feature_importances_df = feature_importances_df.sort_values(by='Importance', ascending=False)
+
+# Exibir as 10 principais features (opcional)
+print(feature_importances_df.head(20))
+----------------------------------------------------------------------------------------------------------------
+
+"""
+RFM = RandomForestClassifier(random_state=2022)
+RFM.fit(X,y)
+feature_importances = RFM.feature_importances_
+
+
+#mdi_importances = pd.Series(rf_model.feature_importances_, index=X_test.columns)
+
+
+#result = permutation_importance(rf_model, X_test, y_test, n_repeats=10, random_state=42, n_jobs=2)
+#p_importances = pd.Series(result.importances_mean, index=X_test.columns)
+
+features_to_drop = []
+for feature, importance in zip(X.columns, feature_importances):
+    #print(f"{feature}: {importance}")
+
+    if importance < 0.001:
+        features_to_drop.append(feature)
+
+print(len(features_to_drop))"""
+---------------------------------------------------------------------------------------------------------------------
+
+"""concat = concat.drop(columns=features_to_drop)
+
+concat.shape"""
+------------------------------------------------------------------------------------------------------------------------
+plt.figure(figsize=(10, 8))
+cm = confusion_matrix(y_test, predictions)
+sns.heatmap(cm, annot=True, fmt='d', cmap='Blues')
+plt.title('Confusion Matrix on Validation Set')
+plt.ylabel('True Label')
+plt.xlabel('Predicted Label')
+plt.show()
